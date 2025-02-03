@@ -22,7 +22,10 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    sh 'npx cypress run'
+                    def result = sh(script: 'npx cypress run', returnStdout: true)
+                                echo result
+                                // You can further process the result string to check for success/failure
+
                 }
             }
         }
