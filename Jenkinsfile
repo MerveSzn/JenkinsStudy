@@ -22,7 +22,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    def result = sh(script: 'npx cypress run --reporter spec', returnStdout: true)
+                    def result = sh(script: 'npx cypress run --reporter spec --no-color', returnStdout: true)
                                 echo result
                                 // You can further process the result string to check for success/failure
 
