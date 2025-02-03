@@ -1,14 +1,12 @@
 pipeline {
-    agent any // Jenkins sunucusunda herhangi bir ajan kullanılacak
+    agent any
     environment {
-        // Ortam değişkenleri burada tanımlanabilir
         PATH = "/usr/local/bin:$PATH"
     }
     stages {
         stage('Checkout') {
             steps {
                 script {
-                    // Git reposundan en son sürümü çekiyoruz
                     checkout scm
                 }
             }
@@ -16,52 +14,47 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Gerekli bağımlılıkları yüklüyoruz
                     sh 'npm install'
                     sh 'npm install mochawesome mochawesome-report-generator cypress'
                 }
             }
         }
         stage('Create Report Directory') {
-                    steps {
-                        script {
-                            // Rapor dizinini oluşturun
-                           sh 'mkdir -p /Users/mervesozen/.jenkins/jobs/JenkinsTest/builds/7/htmlreports/Cypress_20Test_20Report'
-                        }
-                    }
+            steps {
+                script {
+                    sh 'mkdir -p cypress/reports'
                 }
+            }
+        }
         stage('Run Tests') {
             steps {
                 script {
-                    // Cypress testlerini çalıştırıyoruz
                     sh 'npx cypress run --reporter mochawesome --reporter-options reportDir=./cypress/reports,overwrite=true'
                 }
             }
         }
-            stage('Publish Mochawesome Report') {
-                steps {
-                    script {
-                        // Farklı bir şekilde HTML raporunu kopyalayın
-                        sh 'cp -r cypress/reports /Users/mervesozen/.jenkins/jobs/JenkinsTest/builds/7/htmlreports/Cypress_20Test_20Report'
-                        publishHTML(target: [
-                            reportName: 'Cypress Test Report',
-                            reportDir: 'cypress/reports',
-                            reportFiles: 'mochawesome.html',
-                            keepAll: true,
-                            allowMissing: false
-                        ])
-                    }
+        stage('Publish Mochawesome Report') {
+            steps {
+                script {
+                    // Rapor dizinini doğru şekilde kopyala
+                    sh "cp -r cypress/reports ${env.WORKSPACE}/htmlreports/Cypress_20Test_20Report"
+                    publishHTML(target: [
+                        reportName: 'Cypress Test Report',
+                        reportDir: 'cypress/reports',
+                        reportFiles: 'mochawesome.html',
+                        keepAll: true,
+                        allowMissing: false
+                    ])
                 }
             }
+        }
     }
 
     post {
         success {
-            // Başarı durumunda yapılacak işlemler
             echo 'Pipeline başarıyla tamamlandı!'
         }
         failure {
-            // Hata durumunda yapılacak işlemler
             echo 'Pipeline sırasında bir hata oluştu.'
         }
     }
