@@ -1,6 +1,9 @@
 pipeline {
     agent any
 
+    options {
+        ansiColor('xterm')
+    }
     environment {
         PATH = "/usr/local/bin:/opt/homebrew/bin:$PATH"
     }
