@@ -22,6 +22,14 @@ pipeline {
                 }
             }
         }
+        stage('Create Report Directory') {
+                    steps {
+                        script {
+                            // Rapor dizinini oluşturun
+                            sh 'mkdir -p cypress/reports'
+                        }
+                    }
+                }
         stage('Run Tests') {
             steps {
                 script {
