@@ -17,8 +17,10 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    sh 'npm ci' // Daha hızlı ve temiz kurulum için 'npm ci' kullanıldı
-                }
+                    sh 'npm ci'
+                    sh 'npm install'
+                    sh 'npm install mochawesome mochawesome-report-generator cypress'
+               }
             }
         }
 
