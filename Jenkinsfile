@@ -26,7 +26,7 @@ pipeline {
                     steps {
                         script {
                             // Rapor dizinini oluşturun
-                            sh 'mkdir -p cypress/reports'
+                           sh 'mkdir -p /Users/mervesozen/.jenkins/jobs/JenkinsTest/builds/7/htmlreports/Cypress_20Test_20Report'
                         }
                     }
                 }
