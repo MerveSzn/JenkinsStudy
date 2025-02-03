@@ -2,7 +2,7 @@ pipeline {
     agent any // Jenkins sunucusunda herhangi bir ajan kullanılacak
     environment {
         // Ortam değişkenleri burada tanımlanabilir
-        NODE_ENV = 'production'
+        PATH = "/usr/local/bin:$PATH"
     }
     stages {
         stage('Checkout') {
