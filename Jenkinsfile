@@ -22,7 +22,6 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    // Cypress testlerini çalıştırıyoruz
                     sh 'npx cypress run'
                 }
             }
@@ -30,8 +29,13 @@ pipeline {
         stage('Publish Mochawesome Report') {
             steps {
                 script {
+                    // Rapor dizinini oluşturun
+                    sh 'mkdir -p cypress/reports'
+
                     // Raporu doğru dizine kopyalayın
-                    archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/reports/**/*'
+                    archiveArtifacts allowEmptyArchive: true, artifacts: '**/cypress/reports/**/*'
+
+                    // HTML raporunu yayınla
                     publishHTML(target: [
                         reportName: 'Cypress Test Report',
                         reportDir: 'cypress/reports',
