@@ -29,7 +29,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    sh 'npx cypress run --reporter spec'
+                    sh 'npx cypress run --reporter spec --browser chrome --headless'
                 }
             }
         }
