@@ -6,7 +6,6 @@ pipeline {
     }
     environment {
         PATH = "/usr/local/bin:/opt/homebrew/bin:$PATH"
-        CYPRESS_CACHE_FOLDER = "$HOME/.cache/Cypress" // Cypress cache için
     }
 
     stages {
@@ -30,10 +29,12 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    sh 'npx cypress run --reporter mochawesome'
+                    sh 'npx cypress run --reporter spec'
                 }
             }
         }
+
+
     }
 
     post {
@@ -44,13 +45,5 @@ pipeline {
         failure {
             echo '❌ Pipeline sırasında bir hata oluştu.'
         }
-        always {
-                    archiveArtifacts artifacts: 'cypress/results/*.json', allowEmptyArchive: true
-                    publishHTML(target: [
-                        reportDir: 'cypress/results',
-                        reportFiles: 'mochawesome.html',
-                        reportName: 'Cypress Test Report'
-                    ])
-                }
     }
 }
