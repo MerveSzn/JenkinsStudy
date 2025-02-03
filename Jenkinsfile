@@ -26,28 +26,26 @@ pipeline {
             steps {
                 script {
                     // Cypress testlerini çalıştırıyoruz
-                    sh 'npx cypress run'
+                    sh 'npx cypress run --reporter mochawesome --reporter-options reportDir=./cypress/reports,overwrite=true'
                 }
             }
         }
-        stage('Generate Report') {
-            steps {
-                script {
-                    // Mochawesome raporunu oluşturuyoruz
-                    sh 'npx mochawesome-merge cypress/results/*.json > cypress/results/merged-report.json'
-                    sh 'npx mochawesome-report-generator cypress/results/merged-report.json'
+            stage('Publish Mochawesome Report') {
+                    steps {
+                        script {
+                            // Raporu Jenkins'e yükleyin
+                            publishHTML(target: [
+                                reportName: 'Cypress Test Report',
+                                reportDir: 'cypress/reports',
+                                reportFiles: 'mochawesome.html',
+                                keepAll: true,
+                                allowMissing: false
+                            ])
+                        }
+                    }
                 }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                script {
-                    // Uygulamanın dağıtımını gerçekleştiriyoruz
-                    sh 'npm run deploy'
-                }
-            }
-        }
     }
+
     post {
         success {
             // Başarı durumunda yapılacak işlemler
