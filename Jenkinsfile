@@ -19,25 +19,19 @@ pipeline {
                 }
             }
         }
-        stage('Create Report Directory') {
-            steps {
-                script {
-                    sh 'mkdir -p cypress/reports'
-                }
-            }
-        }
         stage('Run Tests') {
             steps {
                 script {
-                    sh 'npx cypress run --reporter mochawesome --reporter-options reportDir=./cypress/reports,overwrite=true'
+                    // Cypress testlerini çalıştırıyoruz
+                    sh 'npx cypress run'
                 }
             }
         }
         stage('Publish Mochawesome Report') {
             steps {
                 script {
-                    // Rapor dizinini doğru şekilde kopyala
-                    sh "cp -r cypress/reports ${env.WORKSPACE}/htmlreports/Cypress_20Test_20Report"
+                    // Raporu doğru dizine kopyalayın
+                    archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/reports/**/*'
                     publishHTML(target: [
                         reportName: 'Cypress Test Report',
                         reportDir: 'cypress/reports',
