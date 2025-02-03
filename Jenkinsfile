@@ -29,7 +29,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    sh 'npx cypress run --reporter spec --no-color'
+                    sh 'npx cypress run --reporter spec'
                 }
             }
         }
