@@ -39,19 +39,20 @@ pipeline {
             }
         }
             stage('Publish Mochawesome Report') {
-                    steps {
-                        script {
-                            // Raporu Jenkins'e yükleyin
-                            publishHTML(target: [
-                                reportName: 'Cypress Test Report',
-                                reportDir: 'cypress/reports',
-                                reportFiles: 'mochawesome.html',
-                                keepAll: true,
-                                allowMissing: false
-                            ])
-                        }
+                steps {
+                    script {
+                        // Farklı bir şekilde HTML raporunu kopyalayın
+                        sh 'cp -r cypress/reports /Users/mervesozen/.jenkins/jobs/JenkinsTest/builds/7/htmlreports/Cypress_20Test_20Report'
+                        publishHTML(target: [
+                            reportName: 'Cypress Test Report',
+                            reportDir: 'cypress/reports',
+                            reportFiles: 'mochawesome.html',
+                            keepAll: true,
+                            allowMissing: false
+                        ])
                     }
                 }
+            }
     }
 
     post {
