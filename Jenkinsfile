@@ -20,7 +20,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    sh 'npm ci'
                     sh 'npm install'
                     sh 'npm install mochawesome mochawesome-report-generator cypress'
                }
